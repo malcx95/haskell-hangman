@@ -5,10 +5,10 @@ import Control.Monad
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 maxTries = 10
 
-data Yolo = Yolo {swag :: Int, hype :: String} deriving (Show)
-
-test :: Yolo
-test = Yolo {swag = 5, hype = "hej"}
+-- data Yolo = Yolo {swag :: Int, hype :: String} deriving (Show)
+-- 
+-- test :: Yolo
+-- test = Yolo {swag = 5, hype = "hej"}
 
 -- Word to guess -> Correct letters -> Used letters -> Num Guesses
 playHangMan :: String -> [Char] -> [Char] -> Int -> IO ()
@@ -19,15 +19,16 @@ playHangMan word guessed used numGuessed = do
         putStrLn "Congrats!"
         putStrLn $ "The word was indeed " ++ word
         putStrLn "Goodbye"
+        return ()
     else when (isGameLost numGuessed) $ do 
         putStrLn "Haha, you lost!"
         putStrLn $ "The word was in fact: " ++ word
-        
+        return ()
     putStrLn "Okay, give me a letter:"
-    -- c <- getChar
-    -- if isNewChar c word guessed used then do
-    
-        
+    c <- getChar
+    if isNewChar c word guessed used then 
+        do
+            playHangMan word (guessed ++ [c]) used (numGuessed + 1)
     
 isNewChar :: Char -> String -> [Char] -> [Char] -> Bool
 isNewChar c word guessed used = not(elem c used) && not(elem c guessed) && elem c word 
